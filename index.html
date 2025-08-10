@@ -3,53 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welter & Welter</title>
+    <title>Entkalkungsrechner</title>
     <style>
         body {
-            margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #341e17;
-            color: #c2cb20;
-            text-align: center;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            color: #341e17;
         }
         header {
-            position: relative;
             background-color: #341e17;
-            padding: 10px;
-            text-align: left;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            position: relative;
         }
         header img {
-            height: 60px;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            height: 40px;
         }
         h1 {
+            margin: 0;
+            font-size: 1.5em;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+        }
+        input {
+            padding: 8px;
+            width: 100%;
+            margin-top: 5px;
+            border: 1px solid #341e17;
+            border-radius: 5px;
+        }
+        button {
             margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #c2cb20;
+            color: #341e17;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
-        .video-container {
-            margin-top: 30px;
+        button:hover {
+            background-color: #b0b81d;
         }
-        a {
-            color: #c2cb20;
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f4f4f4;
+            border-left: 5px solid #c2cb20;
         }
     </style>
 </head>
 <body>
-
     <header>
-        <img src="Welter.png" alt="Firmenlogo">
+        <img src="welter-welter-logo.svg" alt="Firmenlogo">
+        <h1>Entkalkungsrechner</h1>
     </header>
 
-    <h1>Willkommen bei Welter & Welter</h1>
-    <p>Qualität in Küche & Design</p>
+    <label for="verbrauch">Wasserverbrauch (m³ pro Jahr):</label>
+    <input type="number" id="verbrauch" placeholder="z. B. 120">
 
-    <div class="video-container">
-        <iframe width="560" height="315" 
-            src="https://www.youtube.com/embed/dUyOCXRW-X8" 
-            title="YouTube video player" 
-            frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowfullscreen>
-        </iframe>
-    </div>
+    <label for="haerte">Wasserhärte (°dH):</label>
+    <input type="number" id="haerte" placeholder="z. B. 18">
 
+    <button onclick="berechnen()">Berechnen</button>
+
+    <div class="result" id="ergebnis"></div>
+
+    <script>
+        function berechnen() {
+            const verbrauch = parseFloat(document.getElementById('verbrauch').value);
+            const haerte = parseFloat(document.getElementById('haerte').value);
+
+            if (isNaN(verbrauch) || isNaN(haerte)) {
+                document.getElementById('ergebnis').innerHTML = "Bitte beide Werte eingeben.";
+                return;
+            }
+
+            const kalk = verbrauch * haerte * 2.8; // Beispielwert
+            document.getElementById('ergebnis').innerHTML =
+                `Bei einem Verbrauch von <strong>${verbrauch} m³</strong> und einer Härte von <strong>${haerte} °dH</strong> lagern sich etwa <strong>${kalk.toFixed(2)} kg</strong> Kalk pro Jahr ab.`;
+        }
+    </script>
 </body>
 </html>
