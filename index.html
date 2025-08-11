@@ -368,7 +368,25 @@
     <div id="waterHardnessHelp" class="muted" style="margin-bottom: 16px;">
       Beispiel: 20 °dH
     </div>
+  <div class="display" aria-live="polite" aria-label="Wasserstand Anzeige">
+    <div class="tank-wrap" role="img" aria-label="Tank-Füllstand">
+      <svg id="tankSvg" viewBox="0 0 120 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+        <rect x="12" y="20" rx="12" ry="12" width="96" height="200" fill="none" stroke="#d6dde3" stroke-width="4" />
+        <rect id="fillRect" x="12" y="220" width="96" height="0" rx="10" ry="10" fill="var(--blue-water)" />
+        <path d="M60 12c-4 0-16 12-16 24 0 22 32 22 32 0 0-12-12-24-16-24z" fill="var(--blue-water)" opacity="0.9" />
+      </svg>
+    </div>
 
+    <div class="stats">
+      <div class="big" id="litersToDescaleText">Nächste Entkalkung: — L</div>
+      <div class="muted" id="remainingText">Verbleibend: — L</div>
+      <div class="fillbar" aria-hidden="true">
+        <div class="fill" id="progressFill" style="width:0%"></div>
+      </div>
+      <div class="notice" id="notice">Jetzt entkalken!</div>
+      <div class="hardness-warning" id="hardnessWarning">Achtung: Häufigeres Entkalken empfohlen (Wasserhärte über 21 °dH)!</div>
+    </div>
+  </div>
     <div>
       <label for="tankCapacity">Wassertank-Kapazität (L)</label>
       <div class="row">
@@ -403,26 +421,6 @@
       <button id="resetButton" class="ghost small" disabled title="Alles zurücksetzen" aria-disabled="true" aria-label="Reset">
         Reset
       </button>
-    </div>
-  </div>
-
-  <div class="display" aria-live="polite" aria-label="Wasserstand Anzeige">
-    <div class="tank-wrap" role="img" aria-label="Tank-Füllstand">
-      <svg id="tankSvg" viewBox="0 0 120 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-        <rect x="12" y="20" rx="12" ry="12" width="96" height="200" fill="none" stroke="#d6dde3" stroke-width="4" />
-        <rect id="fillRect" x="12" y="220" width="96" height="0" rx="10" ry="10" fill="var(--blue-water)" />
-        <path d="M60 12c-4 0-16 12-16 24 0 22 32 22 32 0 0-12-12-24-16-24z" fill="var(--blue-water)" opacity="0.9" />
-      </svg>
-    </div>
-
-    <div class="stats">
-      <div class="big" id="litersToDescaleText">Nächste Entkalkung: — L</div>
-      <div class="muted" id="remainingText">Verbleibend: — L</div>
-      <div class="fillbar" aria-hidden="true">
-        <div class="fill" id="progressFill" style="width:0%"></div>
-      </div>
-      <div class="notice" id="notice">Jetzt entkalken!</div>
-      <div class="hardness-warning" id="hardnessWarning">Achtung: Häufigeres Entkalken empfohlen (Wasserhärte über 21 °dH)!</div>
     </div>
   </div>
 
@@ -693,6 +691,7 @@
 </script>
 </body>
 </html>
+
 
 
 
