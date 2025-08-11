@@ -258,11 +258,57 @@
     outline: 2px solid var(--accent1);
     outline-offset: 2px;
   }
-  @media (max-width: 800px) {
-    .card {
-      grid-template-columns: 1fr;
-      padding: 16px;
-    }
+ @media (max-width: 600px) {
+  /* Card auf volle Breite */
+  .card {
+    max-width: 100%;
+    padding: 12px;
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Buttons auf ca. 50% Breite, max. 140px */
+  button {
+    width: 48%;
+    max-width: 140px;
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+
+  /* Kleinere Buttons extra behandeln (z.B. mit .small) */
+  button.small {
+    width: auto; /* Kleinere Buttons behalten ihre Größe */
+    max-width: none;
+  }
+
+  /* Buttons in Reihen (z.B. row) ordentlich umbrechen */
+  .row {
+    flex-wrap: wrap;
+  }
+
+  /* Tank-Container kleiner machen und zentrieren */
+  .tank-wrap {
+    width: 100px;
+    margin: 0 auto 12px auto;
+  }
+
+  /* Wasserstandanzeige (Display) max. Breite anpassen */
+  .display {
+    min-height: auto;
+    max-width: 100%;
+    margin: 0 auto 16px auto;
+    padding: 12px;
+  }
+
+  /* Hinweis (footer) als Block, volle Breite */
+  footer {
+    display: block;
+    width: 100%;
+    padding: 12px 8px;
+    font-size: 13px;
+    box-sizing: border-box;
+    text-align: center;
+  }
+}
 </style>
 </head>
 <body data-theme="light">
@@ -606,4 +652,5 @@
 </script>
 </body>
 </html>
+
 
