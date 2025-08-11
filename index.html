@@ -259,6 +259,47 @@
     outline-offset: 2px;
   }
  @media (max-width: 600px) {
+     /* Wasserhärte Input schmaler */
+  #waterHardness {
+    flex: 0 0 50px;  /* feste Breite, z.B. 50px */
+    max-width: 50px;
+  }
+
+  /* Berechnen Button neben Wasserhärte */
+  #calculateButton {
+    flex: 1 1 auto;
+    max-width: 140px;
+    width: auto;
+  }
+
+  /* Manuell Liter Input schmaler (max. 9999, also 4 Stellen plus ggf. Komma) */
+  #consumeInput {
+    flex: 0 0 70px; /* z.B. 70px breit */
+    max-width: 70px;
+  }
+
+  /* +1L Button neben dem manuellen Input */
+  #consume1Button {
+    flex: 0 0 auto;
+    min-width: 60px; /* genug Platz für Text */
+  }
+
+  /* Manuell hinzufügen Button (Hinzufügen) ggf. flexibel */
+  #consumeButton {
+    flex: 1 1 auto;
+    max-width: 140px;
+    width: auto;
+  }
+
+  /* Zeilen besser anordnen und Abstand */
+  .water-hardness-row, 
+  #consumeInput ~ button,
+  .row {
+    flex-wrap: nowrap; /* keine Umbrüche */
+    gap: 8px;
+    align-items: center;
+  }
+}
   /* Card auf volle Breite */
   .card {
     max-width: 100%;
@@ -652,6 +693,7 @@
 </script>
 </body>
 </html>
+
 
 
 
