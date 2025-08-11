@@ -8,7 +8,8 @@
   :root{
     --bg: #f4f7fb;
     --card: #ffffff;
-    --accent: linear-gradient(135deg,#4caf50,#2db26f);
+    --accent: #c2cb20; /* Firmenfarbe */
+    --accent-text: #341e17; /* Textfarbe für Buttons */
     --muted: #6b7280;
     --glass: rgba(255,255,255,0.7);
   }
@@ -57,6 +58,8 @@
     background:transparent;
   }
   .row{display:flex; gap:10px}
+
+  /* Normale Buttons */
   button{
     padding:10px 12px;
     border-radius:10px;
@@ -64,19 +67,33 @@
     font-size:15px;
     cursor:pointer;
     background:var(--accent);
-    color:white;
-    box-shadow:0 6px 18px rgba(45,178,111,0.18);
+    color:var(--accent-text);
+    box-shadow:0 6px 18px rgba(0,0,0,0.15);
     display:inline-flex;
     align-items:center;
     gap:8px;
+    font-weight:600;
+    transition: background 0.2s ease, color 0.2s ease;
   }
+  button:hover{
+    background:#b0b81d; /* leicht dunkler beim Hover */
+  }
+
+  /* Ghost-Buttons */
   button.ghost{
     background:transparent;
     color:var(--muted);
     border:1px solid #e6e9ef;
     box-shadow:none;
   }
+  button.ghost:hover{
+    background:var(--accent);
+    color:var(--accent-text);
+    border-color:var(--accent);
+  }
+
   button.small{padding:8px 10px; font-size:14px; border-radius:8px}
+
   .muted{color:var(--muted); font-size:13px}
 
   /* right column */
@@ -141,7 +158,6 @@
       <div class="row">
         <input id="tankCapacity" type="number" min="0" step="0.1" value="2.8" />
         <button id="useTankButton" class="small" title="Tank entleeren (add Verbrauch)">
-          <!-- Tropfen-Icon -->
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden focusable="false" xmlns="http://www.w3.org/2000/svg"><path d="M12 3s5 5 5 8a5 5 0 11-10 0c0-3 5-8 5-8z" fill="currentColor"/></svg>
           Tank verbrauchen
         </button>
@@ -167,13 +183,10 @@
   <div class="display" aria-live="polite">
     <div class="tank-wrap" role="img" aria-label="Tank-Füllstand">
       <svg id="tankSvg" viewBox="0 0 120 260" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-        <!-- Tank outline -->
         <rect x="12" y="20" rx="12" ry="12" width="96" height="200" fill="none" stroke="#d6dde3" stroke-width="4" />
-        <!-- Wave / fill -->
         <g id="fillGroup">
           <rect id="fillRect" x="12" y="220" width="96" height="0" rx="10" ry="10" fill="#4caf50" />
         </g>
-        <!-- small droplet icon at top -->
         <path d="M60 12c-4 0-16 12-16 24 0 22 32 22 32 0 0-12-12-24-16-24z" fill="#2d9e63" opacity="0.9"/>
       </svg>
     </div>
@@ -194,12 +207,10 @@
 
 <script>
 (function(){
-  // State
   let usedLiters = 0;
   let litersToDescale = null;
-  let lastAction = null; // for undo (simple)
+  let lastAction = null;
 
-  // DOM
   const waterHardnessInput = document.getElementById('waterHardness');
   const calculateButton = document.getElementById('calculateButton');
   const resetButton = document.getElementById('resetButton');
@@ -221,7 +232,6 @@
   const notice = document.getElementById('notice');
   const fillRect = document.getElementById('fillRect');
 
-  // Helpers
   function fmt(n){
     if (n === null || isNaN(n)) return '—';
     return (Math.abs(n) >= 1000) ? n.toFixed(0) : n.toFixed(2);
@@ -236,12 +246,11 @@
 
   function updateDisplay(){
     if (litersToDescale === null){
-      litersToDescaleText.textContent = `Nächste Entkalkung: — L`;
-      remainingText.textContent = `Verbleibend: — L`;
-      percentText.textContent = `—%`;
+      litersToDescaleText.textContent = "Nächste Entkalkung: — L";
+      remainingText.textContent = "Verbleibend: — L";
+      percentText.textContent = "—%";
       progressFill.style.width = '0%';
       notice.style.display = 'none';
-      // fill rect to 0
       fillRect.setAttribute('height', 0);
       fillRect.setAttribute('y', 220);
       enableControls(false);
@@ -255,7 +264,6 @@
     percentText.textContent = `${percentUsed.toFixed(1)}%`;
     progressFill.style.width = `${percentUsed}%`;
 
-    // update SVG fill (tank height = 200, top y = 20, bottom y = 220)
     const tankTopY = 20;
     const tankHeight = 200;
     const fillHeight = Math.round((percentUsed / 100) * tankHeight);
@@ -265,7 +273,6 @@
 
     if (percentUsed >= 100) {
       notice.style.display = 'block';
-      // clamp usedLiters so remaining doesn't go negative longterm
       usedLiters = litersToDescale;
     } else {
       notice.style.display = 'none';
@@ -274,7 +281,6 @@
     enableControls(true);
   }
 
-  // Calculation (fix: 2000 / hardness)
   calculateButton.addEventListener('click', () => {
     const h = parseFloat(waterHardnessInput.value);
     if (isNaN(h) || h <= 0) {
@@ -284,7 +290,6 @@
     litersToDescale = 2000 / h;
     usedLiters = 0;
     formula.textContent = `Rechnung: 2000 ÷ ${h} = ${fmt(litersToDescale)} L`;
-    // lock input so user knows value is set
     waterHardnessInput.disabled = true;
     calculateButton.disabled = true;
     resetButton.disabled = false;
@@ -293,7 +298,6 @@
     updateDisplay();
   });
 
-  // Reset everything
   resetButton.addEventListener('click', () => {
     if (!confirm('Zurücksetzen? Alle Zähler werden gelöscht.')) return;
     litersToDescale = null;
@@ -307,7 +311,6 @@
     updateDisplay();
   });
 
-  // consume helper
   function consumeLiters(amount){
     if (litersToDescale === null) {
       alert('Bitte zuerst die Entkalkungsmenge berechnen.');
@@ -327,9 +330,7 @@
       alert('Bitte eine gültige Tankkapazität (>0) eingeben.');
       return;
     }
-    // If user clicked tank before calculating, we calculate automatically (optional)
     if (litersToDescale === null){
-      // auto-calc attempt using current hardness input
       const h = parseFloat(waterHardnessInput.value);
       if (isNaN(h) || h <= 0) {
         alert('Bitte zuerst Wasserhärte eingeben und Berechnen.');
@@ -352,7 +353,6 @@
     consumeLiters(1);
   });
 
-  // undo last consumption (very simple)
   undoButton.addEventListener('click', () => {
     if (!lastAction) return;
     if (lastAction.type === 'consume') {
@@ -363,10 +363,8 @@
     }
   });
 
-  // initial render
   updateDisplay();
 
-  // small UX: Enter triggers calculate on hardness input
   waterHardnessInput.addEventListener('keydown', (e)=>{
     if (e.key === 'Enter') calculateButton.click();
   });
